@@ -32,6 +32,7 @@ export function Stories() {
               to={story.name === 'Your Story' ? '/stories/create' : `/stories/view/${story.id}`}
               className="flex flex-col items-center gap-1 cursor-pointer"
             >
+            <div key={story.id} className="flex flex-col items-center gap-1 cursor-pointer">
               <div className={cn(
                 "rounded-full p-[2px]",
                 story.hasStory ? "bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500" : "bg-transparent"
@@ -45,6 +46,7 @@ export function Stories() {
                 {story.name.split(' ')[0]}
               </span>
             </Link>
+            </div>
           ))}
         </div>
         <ScrollBar orientation="horizontal" className="hidden" />
