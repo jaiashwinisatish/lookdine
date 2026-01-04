@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 interface Story {
   id: string;
@@ -26,6 +27,11 @@ export function Stories() {
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex w-max space-x-4 px-4">
           {stories.map((story) => (
+            <Link
+              key={story.id}
+              to={story.name === 'Your Story' ? '/stories/create' : `/stories/view/${story.id}`}
+              className="flex flex-col items-center gap-1 cursor-pointer"
+            >
             <div key={story.id} className="flex flex-col items-center gap-1 cursor-pointer">
               <div className={cn(
                 "rounded-full p-[2px]",
@@ -39,6 +45,7 @@ export function Stories() {
               <span className="text-xs font-medium text-muted-foreground">
                 {story.name.split(' ')[0]}
               </span>
+            </Link>
             </div>
           ))}
         </div>

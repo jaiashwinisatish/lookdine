@@ -4,6 +4,7 @@ import L from 'leaflet';
 import { VenueData } from '@/components/venue/VenueCard';
 import { PersonData } from '@/components/social/PersonCard';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 // Fix for default Leaflet markers in webpack/vite
 import icon from 'leaflet/dist/images/marker-icon.png';
@@ -25,11 +26,27 @@ interface MapComponentProps {
 }
 
 export function MapComponent({ venues = [], people = [], className = "h-[400px] w-full rounded-xl" }: MapComponentProps) {
+  const navigate = useNavigate();
   // Default center (Bangalore based on mock data text)
   const defaultCenter: [number, number] = [12.9352, 77.6245]; // Koramangala coordinates
 
   // Helper to generate random offset for demo purposes since mock data doesn't have coords
   const getRandomOffset = () => (Math.random() - 0.5) * 0.02;
+
+  const createIcon = (image: string, name: string) => {
+    return L.divIcon({
+      className: 'custom-icon',
+      html: `<div class="flex flex-col items-center">
+               <div class="h-10 w-10 rounded-full border-2 border-white overflow-hidden shadow-lg bg-white">
+                 <img src="${image}" alt="${name}" class="h-full w-full object-cover" />
+               </div>
+               <span class="mt-1 text-xs font-bold bg-white/90 px-1 rounded shadow-sm whitespace-nowrap">${name}</span>
+             </div>`,
+      iconSize: [40, 60],
+      iconAnchor: [20, 60],
+      popupAnchor: [0, -60]
+    });
+  };
 
   return (
     <div className={className}>
@@ -43,6 +60,10 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
           <Marker
             key={`venue-${venue.id}`}
             position={[defaultCenter[0] + getRandomOffset(), defaultCenter[1] + getRandomOffset()]}
+            icon={createIcon(venue.image, venue.name)}
+            eventHandlers={{
+                click: () => navigate(`/hotel/${venue.id}`),
+            }}
           >
             <Popup>
               <div className="text-sm font-semibold">{venue.name}</div>
@@ -55,6 +76,10 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
           <Marker
             key={`person-${person.id}`}
             position={[defaultCenter[0] + getRandomOffset(), defaultCenter[1] + getRandomOffset()]}
+            icon={createIcon(person.image, person.name)}
+            eventHandlers={{
+                click: () => navigate(`/user/${person.id}`),
+            }}
           >
             <Popup>
               <div className="text-sm font-semibold">{person.name}</div>
