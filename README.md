@@ -1,0 +1,3 @@
+LookDine – Social Dining Experience
+
+Created by Aman Gupta, LookDine is a UI-first platform for cafés and restaurants that makes dining out social, interactive, and visually engaging. Users can browse cafés, select tables, and customize occasions like birthdays, dates, or parties — all through a minimal, mobile-first interface. Designed with teen and adult modes, LookDine focuses purely on beautiful, user-friendly UI, turning every meal into a memorable experience.

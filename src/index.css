@@ -1,0 +1,261 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@layer base {
+  :root {
+    /* Core palette - Warm social dining */
+    --background: 0 0% 98%;
+    --foreground: 220 15% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 15% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 15% 15%;
+
+    /* Warm coral accent - social & food vibes */
+    --primary: 12 100% 64%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Soft sage for secondary */
+    --secondary: 150 20% 95%;
+    --secondary-foreground: 150 30% 30%;
+
+    --muted: 220 10% 96%;
+    --muted-foreground: 220 10% 50%;
+
+    /* Accent - warm orange */
+    --accent: 25 95% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 12 100% 64%;
+
+    --radius: 1rem;
+
+    /* Custom LookDine tokens */
+    --coral: 12 100% 64%;
+    --coral-light: 12 100% 95%;
+    --coral-dark: 12 80% 50%;
+    
+    --sage: 150 30% 85%;
+    --sage-light: 150 30% 95%;
+    --sage-dark: 150 30% 40%;
+
+    --cream: 40 40% 97%;
+    --warm-gray: 30 10% 60%;
+
+    /* Teen mode - softer, friendlier */
+    --teen-primary: 200 80% 60%;
+    --teen-accent: 280 60% 65%;
+
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(12, 100%, 64%) 0%, hsl(25, 95%, 55%) 100%);
+    --gradient-teen: linear-gradient(135deg, hsl(200, 80%, 60%) 0%, hsl(280, 60%, 65%) 100%);
+    --gradient-card: linear-gradient(180deg, hsl(0, 0%, 100%) 0%, hsl(40, 40%, 99%) 100%);
+    --gradient-hero: linear-gradient(180deg, hsl(12, 100%, 64%, 0.1) 0%, transparent 100%);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px hsl(220, 15%, 15%, 0.05);
+    --shadow-md: 0 4px 12px hsl(220, 15%, 15%, 0.08);
+    --shadow-lg: 0 8px 24px hsl(220, 15%, 15%, 0.12);
+    --shadow-glow: 0 4px 20px hsl(12, 100%, 64%, 0.25);
+
+    /* Navigation */
+    --nav-height: 5rem;
+    --header-height: 4rem;
+
+    /* Sidebar (keeping for compatibility) */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 12 100% 64%;
+  }
+
+  .dark {
+    --background: 220 20% 10%;
+    --foreground: 0 0% 98%;
+
+    --card: 220 20% 13%;
+    --card-foreground: 0 0% 98%;
+
+    --popover: 220 20% 13%;
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 12 100% 64%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 220 15% 18%;
+    --muted-foreground: 220 10% 60%;
+
+    --accent: 25 95% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 20%;
+    --input: 220 15% 20%;
+    --ring: 12 100% 64%;
+  }
+
+  /* Teen Mode Theme Override */
+  .teen-mode {
+    --primary: 200 80% 60%;
+    --primary-foreground: 0 0% 100%;
+    --accent: 280 60% 65%;
+    --accent-foreground: 0 0% 100%;
+    --ring: 200 80% 60%;
+    --gradient-primary: linear-gradient(135deg, hsl(200, 80%, 60%) 0%, hsl(280, 60%, 65%) 100%);
+    --shadow-glow: 0 4px 20px hsl(200, 80%, 60%, 0.25);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .glass-effect {
+    @apply bg-card/80 backdrop-blur-lg;
+  }
+
+  .card-elevated {
+    box-shadow: var(--shadow-md);
+  }
+
+  .card-glow {
+    box-shadow: var(--shadow-glow);
+  }
+
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-teen {
+    background: var(--gradient-teen);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .text-gradient {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Mobile app container */
+  .app-container {
+    @apply mx-auto max-w-md min-h-screen relative;
+  }
+
+  .page-content {
+    @apply pb-24 pt-4 px-4;
+  }
+
+  /* Smooth animations */
+  .animate-in {
+    animation: fadeIn 0.3s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes pulse-soft {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.7;
+    }
+  }
+
+  .animate-slide-up {
+    animation: slideUp 0.4s ease-out;
+  }
+
+  .animate-pulse-soft {
+    animation: pulse-soft 2s ease-in-out infinite;
+  }
+
+  /* Status badges */
+  .status-busy {
+    @apply bg-destructive/10 text-destructive;
+  }
+
+  .status-chill {
+    @apply bg-secondary text-secondary-foreground;
+  }
+
+  .status-quiet {
+    @apply bg-sage-light text-sage-dark;
+  }
+
+  /* Hide scrollbar but keep functionality */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+
+  .safe-top {
+    padding-top: env(safe-area-inset-top, 1rem);
+  }
+}
