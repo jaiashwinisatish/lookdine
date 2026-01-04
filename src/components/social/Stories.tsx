@@ -1,6 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
+import { Link } from "react-router-dom";
 
 interface Story {
   id: string;
@@ -26,20 +27,22 @@ export function Stories() {
       <ScrollArea className="w-full whitespace-nowrap">
         <div className="flex w-max space-x-4 px-4">
           {stories.map((story) => (
-            <div key={story.id} className="flex flex-col items-center gap-1 cursor-pointer">
-              <div className={cn(
-                "rounded-full p-[2px]",
-                story.hasStory ? "bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500" : "bg-transparent"
-              )}>
-                <Avatar className="h-14 w-14 border-2 border-background">
-                  <AvatarImage src={story.avatar} alt={story.name} />
-                  <AvatarFallback>{story.name[0]}</AvatarFallback>
-                </Avatar>
+            <Link key={story.id} to={`/stories/${story.id}`}>
+              <div className="flex flex-col items-center gap-1 cursor-pointer">
+                <div className={cn(
+                  "rounded-full p-[2px]",
+                  story.hasStory ? "bg-gradient-to-tr from-yellow-400 via-orange-500 to-red-500" : "bg-transparent"
+                )}>
+                  <Avatar className="h-14 w-14 border-2 border-background">
+                    <AvatarImage src={story.avatar} alt={story.name} />
+                    <AvatarFallback>{story.name[0]}</AvatarFallback>
+                  </Avatar>
+                </div>
+                <span className="text-xs font-medium text-muted-foreground">
+                  {story.name.split(' ')[0]}
+                </span>
               </div>
-              <span className="text-xs font-medium text-muted-foreground">
-                {story.name.split(' ')[0]}
-              </span>
-            </div>
+            </Link>
           ))}
         </div>
         <ScrollBar orientation="horizontal" className="hidden" />
