@@ -30,9 +30,6 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
   // Default center (Bangalore based on mock data text)
   const defaultCenter: [number, number] = [12.9352, 77.6245]; // Koramangala coordinates
 
-  // Helper to generate random offset for demo purposes since mock data doesn't have coords
-  const getRandomOffset = () => (Math.random() - 0.5) * 0.02;
-
   const createIcon = (image: string, name: string) => {
     return L.divIcon({
       className: 'custom-icon',
@@ -59,7 +56,7 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
         {venues.map((venue) => (
           <Marker
             key={`venue-${venue.id}`}
-            position={[defaultCenter[0] + getRandomOffset(), defaultCenter[1] + getRandomOffset()]}
+            position={[venue.coordinates.lat, venue.coordinates.lng]}
             icon={createIcon(venue.image, venue.name)}
             eventHandlers={{
                 click: () => navigate(`/hotel/${venue.id}`),
@@ -75,7 +72,7 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
         {people.map((person) => (
           <Marker
             key={`person-${person.id}`}
-            position={[defaultCenter[0] + getRandomOffset(), defaultCenter[1] + getRandomOffset()]}
+            position={[person.coordinates.lat, person.coordinates.lng]}
             icon={createIcon(person.image, person.name)}
             eventHandlers={{
                 click: () => navigate(`/user/${person.id}`),

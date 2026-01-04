@@ -25,6 +25,7 @@ export const featuredVenues: VenueData[] = [
     crowdStatus: 'chill',
     cuisine: 'Italian',
     peopleNow: 12,
+    coordinates: { lat: 12.9360, lng: 77.6250 },
   },
   {
     id: '2',
@@ -36,6 +37,7 @@ export const featuredVenues: VenueData[] = [
     crowdStatus: 'busy',
     cuisine: 'Japanese',
     peopleNow: 28,
+    coordinates: { lat: 12.9340, lng: 77.6260 },
   },
   {
     id: '3',
@@ -47,6 +49,7 @@ export const featuredVenues: VenueData[] = [
     crowdStatus: 'chill',
     cuisine: 'Continental',
     peopleNow: 18,
+    coordinates: { lat: 12.9370, lng: 77.6230 },
   },
   {
     id: '4',
@@ -58,6 +61,7 @@ export const featuredVenues: VenueData[] = [
     crowdStatus: 'quiet',
     cuisine: 'Mexican',
     peopleNow: 6,
+    coordinates: { lat: 12.9330, lng: 77.6220 },
   },
 ];
 
@@ -73,6 +77,7 @@ export const nearbyVenues: VenueData[] = [
     crowdStatus: 'busy',
     cuisine: 'Café & Brewery',
     peopleNow: 15,
+    coordinates: { lat: 12.9355, lng: 77.6240 },
   },
 ];
 
@@ -85,6 +90,7 @@ export const nearbyPeople: PersonData[] = [
     distance: '0.5 km',
     interests: ['Coffee', 'Art', 'Music', 'Travel'],
     connectionType: 'dating',
+    coordinates: { lat: 12.9365, lng: 77.6255 },
   },
   {
     id: '2',
@@ -94,6 +100,7 @@ export const nearbyPeople: PersonData[] = [
     distance: '0.8 km',
     interests: ['Food', 'Photography', 'Hiking'],
     connectionType: 'friendship',
+    coordinates: { lat: 12.9345, lng: 77.6235 },
   },
   {
     id: '3',
@@ -103,6 +110,7 @@ export const nearbyPeople: PersonData[] = [
     distance: '1.2 km',
     interests: ['Books', 'Movies', 'Yoga', 'Cooking'],
     connectionType: 'dating',
+    coordinates: { lat: 12.9375, lng: 77.6265 },
   },
   {
     id: '4',
@@ -112,6 +120,7 @@ export const nearbyPeople: PersonData[] = [
     distance: '0.3 km',
     interests: ['Gaming', 'Tech', 'Startups'],
     connectionType: 'friendship',
+    coordinates: { lat: 12.9335, lng: 77.6215 },
   },
 ];
 

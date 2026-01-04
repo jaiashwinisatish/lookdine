@@ -14,6 +14,10 @@ export interface VenueData {
   crowdStatus: 'busy' | 'chill' | 'quiet';
   cuisine: string;
   peopleNow?: number;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
 }
 
 interface VenueCardProps {
