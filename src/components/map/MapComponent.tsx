@@ -1,9 +1,9 @@
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { VenueData } from '@/components/venue/VenueCard';
 import { PersonData } from '@/components/social/PersonCard';
-import { useEffect } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 // Fix for default Leaflet markers in webpack/vite
@@ -25,10 +25,52 @@ interface MapComponentProps {
   className?: string;
 }
 
+function MapController({ center }: { center: [number, number] }) {
+  const map = useMap();
+  useEffect(() => {
+    map.setView(center);
+  }, [center, map]);
+  return null;
+}
+
 export function MapComponent({ venues = [], people = [], className = "h-[400px] w-full rounded-xl" }: MapComponentProps) {
   const navigate = useNavigate();
   // Default center (Bangalore based on mock data text)
   const defaultCenter: [number, number] = [12.9352, 77.6245]; // Koramangala coordinates
+  const [center, setCenter] = useState<[number, number]>(defaultCenter);
+
+  useEffect(() => {
+    if ("geolocation" in navigator) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setCenter([position.coords.latitude, position.coords.longitude]);
+        },
+        (error) => {
+          console.error("Error getting location:", error);
+        }
+      );
+    }
+  }, []);
+
+  // Helper to generate random offset for demo purposes since mock data doesn't have coords
+  const getRandomOffset = () => (Math.random() - 0.5) * 0.02;
+
+  // Memoize offsets to keep positions stable relative to center
+  const venueOffsets = useMemo(() => {
+    return venues.map(v => ({
+      id: v.id,
+      latOffset: getRandomOffset(),
+      lngOffset: getRandomOffset()
+    }));
+  }, [venues]);
+
+  const personOffsets = useMemo(() => {
+    return people.map(p => ({
+      id: p.id,
+      latOffset: getRandomOffset(),
+      lngOffset: getRandomOffset()
+    }));
+  }, [people]);
 
   const createIcon = (image: string, name: string) => {
     return L.divIcon({
@@ -48,6 +90,7 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
   return (
     <div className={className}>
       <MapContainer center={defaultCenter} zoom={14} scrollWheelZoom={false} className="h-full w-full rounded-xl z-0">
+        <MapController center={center} />
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -84,9 +127,46 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
             </Popup>
           </Marker>
         ))}
+        {venues.map((venue, index) => {
+          const offset = venueOffsets[index];
+          return (
+            <Marker
+              key={`venue-${venue.id}`}
+              position={[center[0] + offset.latOffset, center[1] + offset.lngOffset]}
+              icon={createIcon(venue.image, venue.name)}
+              eventHandlers={{
+                  click: () => navigate(`/hotel/${venue.id}`),
+              }}
+            >
+              <Popup>
+                <div className="text-sm font-semibold">{venue.name}</div>
+                <div className="text-xs">{venue.cuisine}</div>
+              </Popup>
+            </Marker>
+          );
+        })}
+
+        {people.map((person, index) => {
+          const offset = personOffsets[index];
+          return (
+            <Marker
+              key={`person-${person.id}`}
+              position={[center[0] + offset.latOffset, center[1] + offset.lngOffset]}
+              icon={createIcon(person.avatar, person.name)}
+              eventHandlers={{
+                  click: () => navigate(`/user/${person.id}`),
+              }}
+            >
+              <Popup>
+                <div className="text-sm font-semibold">{person.name}</div>
+                <div className="text-xs">{person.interests.join(', ')}</div>
+              </Popup>
+            </Marker>
+          );
+        })}
 
         {/* Current Location */}
-        <Marker position={defaultCenter}>
+        <Marker position={center}>
              <Popup>You are here</Popup>
         </Marker>
       </MapContainer>
