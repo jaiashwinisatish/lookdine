@@ -96,6 +96,37 @@ export function MapComponent({ venues = [], people = [], className = "h-[400px] 
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
+        {venues.map((venue) => (
+          <Marker
+            key={`venue-${venue.id}`}
+            position={[venue.coordinates.lat, venue.coordinates.lng]}
+            icon={createIcon(venue.image, venue.name)}
+            eventHandlers={{
+                click: () => navigate(`/hotel/${venue.id}`),
+            }}
+          >
+            <Popup>
+              <div className="text-sm font-semibold">{venue.name}</div>
+              <div className="text-xs">{venue.cuisine}</div>
+            </Popup>
+          </Marker>
+        ))}
+
+        {people.map((person) => (
+          <Marker
+            key={`person-${person.id}`}
+            position={[person.coordinates.lat, person.coordinates.lng]}
+            icon={createIcon(person.image, person.name)}
+            eventHandlers={{
+                click: () => navigate(`/user/${person.id}`),
+            }}
+          >
+            <Popup>
+              <div className="text-sm font-semibold">{person.name}</div>
+              <div className="text-xs">{person.interests.join(', ')}</div>
+            </Popup>
+          </Marker>
+        ))}
         {venues.map((venue, index) => {
           const offset = venueOffsets[index];
           return (
