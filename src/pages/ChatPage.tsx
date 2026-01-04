@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,6 +8,7 @@ import { chatConversations } from '@/data/mockData';
 import { Search, Check, CheckCheck, Store, Trash2, XCircle, Image as ImageIcon, AlertTriangle, MoreVertical } from 'lucide-react';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { toast } from 'sonner';
+import { fetchChatStatus, clearChat, deleteChat } from '@/services/api';
 
 const ChatPage = () => {
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
@@ -16,20 +17,46 @@ const ChatPage = () => {
   const [clearedChats, setClearedChats] = useState<string[]>([]);
   const [deletedChats, setDeletedChats] = useState<string[]>([]);
 
+  useEffect(() => {
+    const loadChatStatus = async () => {
+      try {
+        const { cleared, deleted } = await fetchChatStatus();
+        setClearedChats(cleared);
+        setDeletedChats(deleted);
+      } catch (error) {
+        console.error('Failed to load chat status', error);
+        toast.error('Failed to load chat status');
+      }
+    };
+    loadChatStatus();
+  }, []);
+
   const selectedConversation = chatConversations.find((c) => c.id === selectedChat);
 
-  const handleClearChat = () => {
+  const handleClearChat = async () => {
     if (selectedChat) {
+      try {
+        await clearChat(selectedChat);
         setClearedChats([...clearedChats, selectedChat]);
         toast.success("Chat cleared");
+      } catch (error) {
+        console.error('Failed to clear chat', error);
+        toast.error('Failed to clear chat');
+      }
     }
   };
 
-  const handleDeleteChat = () => {
+  const handleDeleteChat = async () => {
     if (selectedChat) {
+      try {
+        await deleteChat(selectedChat);
         setDeletedChats([...deletedChats, selectedChat]);
         setSelectedChat(null);
         toast.success("Chat deleted");
+      } catch (error) {
+        console.error('Failed to delete chat', error);
+        toast.error('Failed to delete chat');
+      }
     }
   };
 
