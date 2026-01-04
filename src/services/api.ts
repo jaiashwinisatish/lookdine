@@ -19,12 +19,10 @@ export interface User {
 }
 
 export const fetchVenues = async (): Promise<VenueData[]> => {
-  await delay(800); // 800ms simulated latency
   return nearbyVenues;
 };
 
 export const fetchPeople = async (): Promise<PersonData[]> => {
-  await delay(800); // 800ms simulated latency
   return nearbyPeople;
 };
 

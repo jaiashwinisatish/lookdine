@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppModeProvider } from "@/context/AppModeContext";
+import { AuthProvider } from "@/context/AuthContext";
 import Index from "./pages/Index";
 import NearbyPage from "./pages/NearbyPage";
 import RestaurantDetailPage from "./pages/RestaurantDetailPage";
@@ -39,9 +40,10 @@ const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <AppModeProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
+        <AuthProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/nearby" element={<NearbyPage />} />
@@ -74,6 +76,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
+        </AuthProvider>
       </AppModeProvider>
     </TooltipProvider>
   </QueryClientProvider>
