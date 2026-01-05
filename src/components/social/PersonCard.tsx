@@ -12,6 +12,10 @@ export interface PersonData {
   interests: string[];
   connectionType: 'dating' | 'friendship';
   isBlurred?: boolean;
+  coordinates: {
+    lat: number;
+    lng: number;
+  };
 }
 
 interface PersonCardProps {

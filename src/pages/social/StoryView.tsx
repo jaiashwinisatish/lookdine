@@ -1,16 +1,28 @@
+import { useParams, Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import { ArrowLeft } from "lucide-react";
 
-import { useParams } from "react-router-dom";
-import { AppLayout } from "@/components/layout/AppLayout";
-
-export default function StoryView() {
+const StoryPage = () => {
   const { id } = useParams();
 
-  return (
-    <div className="h-screen w-full bg-black flex items-center justify-center relative">
-       <div className="text-white text-center">
-         <h1 className="text-xl">Viewing Story {id}</h1>
-         {/* Story content implementation */}
-       </div>
+    return (
+    <div className="flex flex-col h-screen bg-black text-white">
+      <div className="p-4 flex items-center justify-between absolute top-0 w-full z-10">
+        <Link to="/">
+          <Button variant="ghost" size="icon" className="text-white hover:bg-white/20">
+             <ArrowLeft className="h-6 w-6" />
+          </Button>
+        </Link>
+      </div>
+      <div><h1>Testing ok</h1></div>
+      <div className="flex-1 flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold mb-4">Story {id}</h1>
+          <p className="text-gray-400">This is a placeholder for story content.</p>
+        </div>
+      </div>
     </div>
   );
-}
+};
+
+export default StoryPage;
