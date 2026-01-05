@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import NotFound from '@/pages/NotFound';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -26,8 +27,12 @@ const RestaurantDetailPage = () => {
   const [isFavorite, setIsFavorite] = useState(false);
   const [activeTab, setActiveTab] = useState('menu');
 
-  // Find venue or use first one as fallback
-  const venue = featuredVenues.find((v) => v.id === id) || featuredVenues[0];
+  // Find venue
+  const venue = featuredVenues.find((v) => v.id === id);
+
+  if (!venue) {
+    return <NotFound />;
+  }
 
   const categories = [...new Set(menuItems.map((item) => item.category))];
 
