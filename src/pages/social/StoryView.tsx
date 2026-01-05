@@ -5,11 +5,7 @@ import { ArrowLeft } from "lucide-react";
 const StoryPage = () => {
   const { id } = useParams();
 
-  // Mock finding the story (in a real app, you'd fetch it)
-  // Reusing the mock data from Stories.tsx would be better if exported,
-  // but for now I'll just show the ID to verify routing.
-
-  return (
+    return (
     <div className="flex flex-col h-screen bg-black text-white">
       <div className="p-4 flex items-center justify-between absolute top-0 w-full z-10">
         <Link to="/">
