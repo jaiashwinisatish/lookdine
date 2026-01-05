@@ -14,7 +14,7 @@ const StoryPage = () => {
           </Button>
         </Link>
       </div>
-
+      <div><h1>Testing ok</h1></div>
       <div className="flex-1 flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Story {id}</h1>
