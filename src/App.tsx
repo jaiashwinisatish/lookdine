@@ -28,11 +28,18 @@ import ProfileEdit from "./pages/profile/ProfileEdit";
 import SettingsPage from "./pages/settings/SettingsPage";
 import DataPolicy from "./pages/policies/DataPolicy";
 import SecurityPolicy from "./pages/policies/SecurityPolicy";
+import TermsAndConditions from "./pages/policies/TermsAndConditions";
+
+import PrivacyAndSafetySettings from "./pages/settings/PrivacyAndSafetySettings";
+import AppPreferenceSettings from "./pages/settings/AppPreferenceSettings";
+
 
 // Social
 import StoryView from "./pages/social/StoryView";
 import CreateStory from "./pages/social/CreateStory";
 import NotificationsPage from "./pages/NotificationsPage";
+import MyFavorites from "./pages/settings/MyFavorites";
+import MyBookings from "./pages/settings/MyBookings";
 
 const queryClient = new QueryClient();
 
@@ -55,7 +62,7 @@ const App = () => (
             <Route path="/stories/:id" element={<StoryPage />} />
 
             {/* Auth Routes */}
-            <Route path="/auth/login" element={<Login />} />
+            <Route path="/login" element={<Login />} />
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/set-password" element={<SetPassword />} />
@@ -67,6 +74,12 @@ const App = () => (
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/policies/data" element={<DataPolicy />} />
             <Route path="/policies/security" element={<SecurityPolicy />} />
+            <Route path="/policies/terms" element={<TermsAndConditions />} />
+            <Route path="/favorites" element={<MyFavorites />} />
+            <Route path="/bookings" element={<MyBookings />} />
+            <Route path="/addresses" element={<div>Addresses</div>} />
+            <Route path="/settings/privacy-safety" element={<PrivacyAndSafetySettings />} />
+            <Route path="/settings/app-preferences" element={<AppPreferenceSettings />} />
 
             {/* Social */}
             <Route path="/stories/view/:id" element={<StoryView />} />

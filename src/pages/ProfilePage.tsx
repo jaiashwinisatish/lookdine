@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AppLayout } from '@/components/layout/AppLayout';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -17,32 +18,40 @@ import {
   ChevronRight,
   Camera,
   Edit2,
+  FileText,
 } from 'lucide-react';
 
 const ProfilePage = () => {
+  const navigate = useNavigate();
   const { mode, setMode, isTeenMode } = useAppMode();
   const [locationEnabled, setLocationEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [visibilityEnabled, setVisibilityEnabled] = useState(true);
+
+  const handleLogout = () => {
+    // Perform logout logic here
+    console.log('Logged out');
+    navigate('/login');
+  };
 
   const menuItems = [
     {
       icon: Heart,
       label: 'Favorites',
       description: '12 saved places',
-      action: () => {},
+      action: () => navigate('/favorites'),
     },
     {
       icon: Calendar,
       label: 'My Bookings',
       description: '3 upcoming',
-      action: () => {},
+      action: () => navigate('/bookings'),
     },
     {
       icon: MapPin,
       label: 'My Addresses',
       description: '2 saved locations',
-      action: () => {},
+      action: () => navigate('/addresses'),
     },
     {
       icon: Bell,
@@ -58,13 +67,19 @@ const ProfilePage = () => {
       icon: Shield,
       label: 'Privacy & Safety',
       description: 'Manage your data',
-      action: () => {},
+      action: () => navigate('/policies/data'),
+    },
+    {
+      icon: FileText,
+      label: 'Terms & Conditions',
+      description: 'Read our terms',
+      action: () => navigate('/policies/terms'),
     },
     {
       icon: Settings,
       label: 'Settings',
       description: 'App preferences',
-      action: () => {},
+      action: () => navigate('/settings'),
     },
   ];
 
@@ -95,7 +110,7 @@ const ProfilePage = () => {
                 </div>
                 <p className="text-sm text-muted-foreground">Food lover • Coffee addict</p>
               </div>
-              <Button variant="outline" size="iconSm">
+              <Button variant="outline" size="iconSm" onClick={() => navigate('/profile/edit')}>
                 <Edit2 className="h-4 w-4" />
               </Button>
             </div>
@@ -192,7 +207,7 @@ const ProfilePage = () => {
         </Card>
 
         {/* Logout */}
-        <Button variant="outline" className="w-full text-destructive border-destructive/30 hover:bg-destructive/5">
+        <Button variant="outline" className="w-full text-destructive border-destructive/30 hover:bg-destructive/5" onClick={handleLogout}>
           <LogOut className="h-4 w-4 mr-2" />
           Log Out
         </Button>
