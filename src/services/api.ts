@@ -49,6 +49,7 @@ export const deleteChat = async (chatId: string): Promise<void> => {
     deleted.push(chatId);
     localStorage.setItem('deletedChats', JSON.stringify(deleted));
   }
+};
 export const signup = async (data: SignupData): Promise<User> => {
   await delay(1500); // Simulate network request
 
