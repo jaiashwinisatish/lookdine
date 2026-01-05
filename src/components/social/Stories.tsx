@@ -3,14 +3,14 @@ import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import { Link } from "react-router-dom";
 
-interface Story {
+export interface Story {
   id: string;
   name: string;
   avatar: string;
   hasStory: boolean;
 }
 
-const stories: Story[] = [
+export const stories: Story[] = [
   { id: '1', name: 'Your Story', avatar: 'https://github.com/shadcn.png', hasStory: false },
   { id: '2', name: 'Priya', avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100', hasStory: true },
   { id: '3', name: 'Rahul', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100', hasStory: true },
