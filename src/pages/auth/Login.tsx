@@ -37,7 +37,7 @@ export default function Login() {
         title: "Login Successful",
         description: "Welcome back!",
       });
-      navigate("/");
+      // navigate("/");
     } catch (error) {
       toast({
         variant: "destructive",

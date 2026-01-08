@@ -35,8 +35,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     setError(null);
     try {
-      const user = await authLogin(credentials);
-      setUser(user);
+      const res = await fetch("https://foodslinkx-backend.vercel.app/api/auth/login",{
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify(credentials)
+      })
+      const data = await res.json();
+      console.log(data?.data?.role)
+      setUser(data?.data?.user);
       localStorage.setItem('auth_user', JSON.stringify(user));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'An error occurred during login');

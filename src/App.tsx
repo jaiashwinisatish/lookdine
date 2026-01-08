@@ -62,7 +62,7 @@ const App = () => (
             <Route path="/stories/:id" element={<StoryPage />} />
 
             {/* Auth Routes */}
-            <Route path="/login" element={<Login />} />
+            <Route path="/auth/login" element={<Login />} />
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/set-password" element={<SetPassword />} />
