@@ -745,6 +745,7 @@ in the Software without restriction...
 - **React Team** - For the incredible framework
 - **Open Source Community** - For the tools and inspiration
 
+<<<<<<< HEAD
 ---
 
 ## 📞 Support
@@ -752,6 +753,9 @@ in the Software without restriction...
 ...
 
 ---
+=======
+
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 
 <div align="center">
 

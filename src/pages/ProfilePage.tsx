@@ -6,7 +6,10 @@ import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Switch } from '@/components/ui/switch';
 import { useAppMode } from '@/context/AppModeContext';
+<<<<<<< HEAD
 import { useAuth } from '@/context/AuthContext';
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 import {
   User,
   Settings,
@@ -25,11 +28,15 @@ import {
 const ProfilePage = () => {
   const navigate = useNavigate();
   const { mode, setMode, isTeenMode } = useAppMode();
+<<<<<<< HEAD
   const { user, isAuthenticated, logout } = useAuth();
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
   const [locationEnabled, setLocationEnabled] = useState(true);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
   const [visibilityEnabled, setVisibilityEnabled] = useState(true);
 
+<<<<<<< HEAD
   const handleLogout = async () => {
     try {
       await logout();
@@ -39,6 +46,12 @@ const ProfilePage = () => {
       // Force navigation even if logout fails
       navigate('/login');
     }
+=======
+  const handleLogout = () => {
+    // Perform logout logic here
+    console.log('Logged out');
+    navigate('/login');
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
   };
 
   const menuItems = [
@@ -93,6 +106,7 @@ const ProfilePage = () => {
   return (
     <AppLayout title="Profile">
       <div className="space-y-5">
+<<<<<<< HEAD
         {/* User Info Card */}
         {isAuthenticated && user && (
           <Card className="p-6">
@@ -120,6 +134,8 @@ const ProfilePage = () => {
             </div>
           </Card>
         )}
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
         {/* Profile Header */}
         <Card className="relative overflow-hidden">
           <div className="absolute inset-0 h-20 gradient-primary opacity-80" />
@@ -215,6 +231,7 @@ const ProfilePage = () => {
         {/* Menu Items */}
         <Card className="divide-y divide-border">
           {menuItems.map((item) => (
+<<<<<<< HEAD
             item.toggle ? (
               <div
                 key={item.label}
@@ -248,6 +265,30 @@ const ProfilePage = () => {
                 <ChevronRight className="h-5 w-5 text-muted-foreground" />
               </button>
             )
+=======
+            <button
+              key={item.label}
+              onClick={item.action}
+              className="flex w-full items-center justify-between p-4 text-left hover:bg-muted/50 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <item.icon className="h-5 w-5 text-muted-foreground" />
+                <div>
+                  <p className="font-medium">{item.label}</p>
+                  <p className="text-xs text-muted-foreground">{item.description}</p>
+                </div>
+              </div>
+              {item.toggle ? (
+                <Switch
+                  checked={item.toggle.value}
+                  onCheckedChange={item.toggle.onChange}
+                  onClick={(e) => e.stopPropagation()}
+                />
+              ) : (
+                <ChevronRight className="h-5 w-5 text-muted-foreground" />
+              )}
+            </button>
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
           ))}
         </Card>
 

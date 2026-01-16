@@ -8,6 +8,7 @@ const getAuthToken = () => {
   return localStorage.getItem('jwt_token');
 };
 
+<<<<<<< HEAD
 const setAuthToken = (token: string) => {
   localStorage.setItem('jwt_token', token);
 };
@@ -58,6 +59,16 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
 const api = {
   async get<T>(endpoint: string): Promise<T> {
     const response = await apiRequest(endpoint);
+=======
+const api = {
+  async get<T>(endpoint: string): Promise<T> {
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
     if (!response.ok) {
       throw new Error(`Failed to fetch: ${response.statusText}`);
     }
@@ -65,6 +76,7 @@ const api = {
   },
 
   async post<T>(endpoint: string, data: any): Promise<T> {
+<<<<<<< HEAD
     try {
       const response = await apiRequest(endpoint, {
         method: 'POST',
@@ -109,11 +121,25 @@ const api = {
     });
     if (!response.ok) {
       throw new Error(`Failed to patch: ${response.statusText}`);
+=======
+    const token = getAuthToken();
+    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to post: ${response.statusText}`);
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
     }
     return response.json();
   },
 };
 
+<<<<<<< HEAD
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -122,12 +148,21 @@ export interface LoginCredentials {
   password: string;
 }
 
+=======
+
+// Simulate API delay
+const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 export interface SignupData {
   name: string;
   email: string;
   password?: string;
+<<<<<<< HEAD
   phone?: string;
   address?: string;
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 }
 
 export interface User {
@@ -135,6 +170,7 @@ export interface User {
   name: string;
   email: string;
   avatar?: string;
+<<<<<<< HEAD
   phone?: string;
   address?: string;
 }
@@ -142,6 +178,8 @@ export interface User {
 export interface LoginResponse {
   user: User;
   token: string;
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 }
 
 export const fetchVenues = async (): Promise<VenueData[]> => {
@@ -176,6 +214,7 @@ export const deleteChat = async (chatId: string): Promise<void> => {
     localStorage.setItem('deletedChats', JSON.stringify(deleted));
   }
 };
+<<<<<<< HEAD
 
 export const signup = async (data: SignupData): Promise<User> => {
   try {
@@ -358,6 +397,23 @@ export const verifyToken = async (): Promise<boolean> => {
     console.warn('Token verification failed:', error);
     return false;
   }
+=======
+export const signup = async (data: SignupData): Promise<User> => {
+  await delay(1500); // Simulate network request
+
+  // Basic validation simulation
+  if (!data.email || !data.password || !data.name) {
+    throw new Error("Missing required fields");
+  }
+
+  // Return a mock user
+  return {
+    id: "user-" + Math.random().toString(36).substr(2, 9),
+    name: data.name,
+    email: data.email,
+    avatar: "https://github.com/shadcn.png"
+  };
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 };
 
 export default api;

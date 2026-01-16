@@ -13,7 +13,10 @@ import DecorationPage from "./pages/DecorationPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
 import StoryPage from "./pages/StoryPage";
+<<<<<<< HEAD
 import SearchPage from "./pages/SearchPage";
+=======
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 import NotFound from "./pages/NotFound";
 
 // Auth
@@ -51,10 +54,16 @@ const App = () => (
         <AuthProvider>
           <Toaster />
           <Sonner />
+<<<<<<< HEAD
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/search" element={<SearchPage />} />
+=======
+          <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<Index />} />
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             <Route path="/nearby" element={<NearbyPage />} />
             <Route path="/restaurant/:id" element={<RestaurantDetailPage />} />
             <Route path="/book" element={<BookingPage />} />
@@ -64,9 +73,13 @@ const App = () => (
             <Route path="/stories/:id" element={<StoryPage />} />
 
             {/* Auth Routes */}
+<<<<<<< HEAD
             <Route path="/login" element={<Login />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
+=======
+            <Route path="/auth/login" element={<Login />} />
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/set-password" element={<SetPassword />} />

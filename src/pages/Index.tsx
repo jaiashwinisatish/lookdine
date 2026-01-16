@@ -3,17 +3,28 @@ import { Button } from '@/components/ui/button';
 import { VenueList } from '@/components/venue/VenueList';
 import { heroData, featuredVenues, nearbyPeople } from '@/data/mockData';
 import { PersonCard } from '@/components/social/PersonCard';
+<<<<<<< HEAD
 import { ChevronRight, Sparkles, Users, MapPin, Utensils, User, LogOut } from 'lucide-react';
 import { useAppMode } from '@/context/AppModeContext';
 import { useAuth } from '@/context/AuthContext';
+=======
+import { ChevronRight, Sparkles, Users, MapPin, Utensils } from 'lucide-react';
+import { useAppMode } from '@/context/AppModeContext';
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 import { Link } from 'react-router-dom';
 
 const Index = () => {
   const { isTeenMode } = useAppMode();
+<<<<<<< HEAD
   const { user, isAuthenticated, logout } = useAuth();
 
   return (
     <AppLayout title="Home" showHeader={true}>
+=======
+
+  return (
+    <AppLayout showSearch showStories>
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
       <div className="space-y-6 md:space-y-8">
         {/* Hero Section */}
         <div className="relative -mx-4 -mt-4 md:mx-0 md:mt-0 md:rounded-2xl overflow-hidden shadow-lg">
@@ -24,6 +35,7 @@ const Index = () => {
             className="h-56 md:h-[400px] w-full object-cover"
           />
           <div className="absolute inset-0 z-20 flex flex-col justify-end p-4 md:p-8">
+<<<<<<< HEAD
             {isAuthenticated ? (
               <>
                 <h1 className="text-2xl md:text-4xl font-bold text-card mb-1">
@@ -71,11 +83,34 @@ const Index = () => {
                 </div>
               </>
             )}
+=======
+            <h1 className="text-2xl md:text-4xl font-bold text-card mb-1">
+              {heroData.title}
+            </h1>
+            <p className="text-sm md:text-lg text-card/80 mb-4 md:mb-6">
+              {heroData.subtitle}
+            </p>
+            <div className="flex gap-2">
+              <Link to="/nearby">
+                <Button variant="hero" size="sm" className="md:h-10 md:px-6">
+                  <MapPin className="h-4 w-4 mr-2" />
+                  Explore Nearby
+                </Button>
+              </Link>
+              <Link to="/book">
+                <Button variant="glass" size="sm" className="md:h-10 md:px-6">
+                  <Utensils className="h-4 w-4 mr-2" />
+                  Book a Table
+                </Button>
+              </Link>
+            </div>
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
           </div>
         </div>
 
         {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-3 md:gap-6">
+<<<<<<< HEAD
           {(isAuthenticated ? [
           // User Account Card
           {
@@ -99,6 +134,13 @@ const Index = () => {
           { icon: Users, label: 'People Nearby', value: '48' },
           { icon: Sparkles, label: 'Events Today', value: '12' }
         ]).map((stat) => (
+=======
+          {[
+            { icon: Utensils, label: 'Restaurants', value: '150+' },
+            { icon: Users, label: 'People Nearby', value: '48' },
+            { icon: Sparkles, label: 'Events Today', value: '12' },
+          ].map((stat) => (
+>>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             <div
               key={stat.label}
               className="flex flex-col items-center rounded-xl bg-card p-3 shadow-soft hover:shadow-lg transition-all"
