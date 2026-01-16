@@ -10,11 +10,7 @@ import { Input } from "@/components/ui/input";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useToast } from "@/hooks/use-toast";
 import { Separator } from "@/components/ui/separator";
-<<<<<<< HEAD
 import { LoginCredentials } from "@/services/api";
-=======
-import { LoginCredentials } from "@/services/auth";
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 
 const loginSchema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -37,15 +33,11 @@ export default function Login() {
     try {
       await login(data as LoginCredentials);
       toast({ title: "Welcome back!" });
-<<<<<<< HEAD
       
       // Small delay to ensure state is updated
       setTimeout(() => {
         navigate("/");
       }, 100);
-=======
-      navigate("/");
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
     } catch (error: any) {
       toast({ variant: "destructive", title: "Login Failed", description: error.message });
     }
@@ -70,14 +62,10 @@ export default function Login() {
           <div className="w-full max-w-sm space-y-8">
             <div className="space-y-2 text-center">
               <h1 className="text-3xl font-bold tracking-tight">Login</h1>
-<<<<<<< HEAD
               <p className="text-muted-foreground">Welcome back! Please sign in to your account</p>
               <p className="text-xs text-muted-foreground">
                 Don't have an account? <Link to="/signup" className="underline font-medium text-primary">Sign up</Link>
               </p>
-=======
-              <p className="text-muted-foreground">Enter your credentials below</p>
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             </div>
 
             <Form {...form}>
@@ -85,11 +73,7 @@ export default function Login() {
                 <FormField control={form.control} name="email" render={({ field }) => (
                   <FormItem>
                     <FormLabel>Email</FormLabel>
-<<<<<<< HEAD
                     <FormControl><Input placeholder="Enter your registered email" {...field} /></FormControl>
-=======
-                    <FormControl><Input placeholder="m@example.com" {...field} /></FormControl>
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
                     <FormMessage />
                   </FormItem>
                 )} />
@@ -100,11 +84,7 @@ export default function Login() {
                       <FormLabel>Password</FormLabel>
                       <Link to="/forgot-password" title="Forgot Password" className="text-xs text-muted-foreground hover:underline">Forgot?</Link>
                     </div>
-<<<<<<< HEAD
                     <FormControl><Input type="password" placeholder="Enter your password" {...field} /></FormControl>
-=======
-                    <FormControl><Input type="password" {...field} /></FormControl>
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
                     <FormMessage />
                   </FormItem>
                 )} />
@@ -122,11 +102,7 @@ export default function Login() {
             </div>
 
             <p className="text-center text-sm text-muted-foreground">
-<<<<<<< HEAD
               Don't have an account? <Link to="/signup" className="underline font-medium text-primary">Sign up here</Link>
-=======
-              New here? <Link to="/signup" className="underline font-medium text-foreground">Create account</Link>
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             </p>
           </div>
         </div>

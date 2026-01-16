@@ -5,18 +5,17 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AppModeProvider } from "@/context/AppModeContext";
 import { AuthProvider } from "@/context/AuthContext";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 import Index from "./pages/Index";
 import NearbyPage from "./pages/NearbyPage";
 import RestaurantDetailPage from "./pages/RestaurantDetailPage";
+import HotelSingleView from "./pages/HotelSingleView";
 import BookingPage from "./pages/BookingPage";
 import DecorationPage from "./pages/DecorationPage";
 import ChatPage from "./pages/ChatPage";
 import ProfilePage from "./pages/ProfilePage";
 import StoryPage from "./pages/StoryPage";
-<<<<<<< HEAD
 import SearchPage from "./pages/SearchPage";
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 import NotFound from "./pages/NotFound";
 
 // Auth
@@ -29,6 +28,7 @@ import SetPassword from "./pages/auth/SetPassword";
 import UserProfile from "./pages/profile/UserProfile";
 import HotelProfile from "./pages/profile/HotelProfile";
 import ProfileEdit from "./pages/profile/ProfileEdit";
+import PublicUserProfile from "./pages/PublicUserProfile";
 import SettingsPage from "./pages/settings/SettingsPage";
 import DataPolicy from "./pages/policies/DataPolicy";
 import SecurityPolicy from "./pages/policies/SecurityPolicy";
@@ -54,38 +54,37 @@ const App = () => (
         <AuthProvider>
           <Toaster />
           <Sonner />
-<<<<<<< HEAD
           <BrowserRouter future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/search" element={<SearchPage />} />
-=======
-          <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             <Route path="/nearby" element={<NearbyPage />} />
             <Route path="/restaurant/:id" element={<RestaurantDetailPage />} />
+            <Route path="/hotel/:id" element={<HotelSingleView />} />
             <Route path="/book" element={<BookingPage />} />
             <Route path="/decorate" element={<DecorationPage />} />
-            <Route path="/chat" element={<ChatPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/chat" element={
+              <ProtectedRoute>
+                <ChatPage />
+              </ProtectedRoute>
+            } />
+            <Route path="/profile" element={
+              <ProtectedRoute>
+                <ProfilePage />
+              </ProtectedRoute>
+            } />
             <Route path="/stories/:id" element={<StoryPage />} />
 
             {/* Auth Routes */}
-<<<<<<< HEAD
             <Route path="/login" element={<Login />} />
             <Route path="/auth/login" element={<Login />} />
             <Route path="/signup" element={<Signup />} />
-=======
-            <Route path="/auth/login" element={<Login />} />
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
             <Route path="/auth/signup" element={<Signup />} />
             <Route path="/auth/forgot-password" element={<ForgotPassword />} />
             <Route path="/auth/set-password" element={<SetPassword />} />
 
             {/* Profile & Settings */}
-            <Route path="/user/:id" element={<UserProfile />} />
+            <Route path="/user/:id" element={<PublicUserProfile />} />
             <Route path="/hotel/:id" element={<HotelProfile />} />
             <Route path="/profile/edit" element={<ProfileEdit />} />
             <Route path="/settings" element={<SettingsPage />} />

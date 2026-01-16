@@ -1,9 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-<<<<<<< HEAD
 import { User, LoginCredentials, login as authLogin, logout as authLogout, verifyToken } from '@/services/api';
-=======
-import { User, LoginCredentials, login as authLogin, logout as authLogout } from '@/services/auth';
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 
 interface AuthContextType {
   user: User | null;
@@ -13,10 +9,7 @@ interface AuthContextType {
   error: string | null;
   login: (credentials: LoginCredentials) => Promise<void>;
   logout: () => Promise<void>;
-<<<<<<< HEAD
   refreshToken: () => Promise<boolean>;
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -28,7 +21,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-<<<<<<< HEAD
     const initializeAuth = async () => {
       try {
         const storedUser = localStorage.getItem('auth_user');
@@ -66,28 +58,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     };
 
     initializeAuth();
-=======
-    const storedUser = localStorage.getItem('auth_user');
-    const storedToken = localStorage.getItem('jwt_token');
-    if (storedUser && storedToken) {
-      try {
-        setUser(JSON.parse(storedUser));
-        setToken(storedToken);
-      } catch (e) {
-        console.error("Failed to parse stored user", e);
-        localStorage.removeItem('auth_user');
-        localStorage.removeItem('jwt_token');
-      }
-    }
-    setIsLoading(false);
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
   }, []);
 
   const login = async (credentials: LoginCredentials) => {
     setIsLoading(true);
     setError(null);
     try {
-<<<<<<< HEAD
       const response = await authLogin(credentials);
       
       if (response.user && response.token) {
@@ -101,30 +77,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'An error occurred during login';
       setError(errorMessage);
-=======
-      const res = await fetch("https://foodslinkx-backend.vercel.app/api/auth/login",{
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify(credentials)
-      })
-      const data = await res.json();
-      const userData = data?.data?.user;
-      const userToken = data?.data?.token;
-
-      if (userData && userToken) {
-        setUser(userData);
-        setToken(userToken);
-        localStorage.setItem('auth_user', JSON.stringify(userData));
-        localStorage.setItem('jwt_token', userToken);
-      } else {
-        throw new Error(data.message || 'Login failed: No user or token returned');
-      }
-
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred during login');
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
       throw err;
     } finally {
       setIsLoading(false);
@@ -135,19 +87,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setIsLoading(true);
     try {
       await authLogout();
-<<<<<<< HEAD
     } catch (err) {
       console.error("Logout failed", err);
       // Continue with local logout even if API call fails
     } finally {
       // Always clear local data regardless of API success
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
       setUser(null);
       setToken(null);
       localStorage.removeItem('auth_user');
       localStorage.removeItem('jwt_token');
-<<<<<<< HEAD
       setIsLoading(false);
     }
   };
@@ -165,12 +113,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     } catch (err) {
       console.error("Token refresh failed:", err);
       return false;
-=======
-    } catch (err) {
-      console.error("Logout failed", err);
-    } finally {
-      setIsLoading(false);
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
     }
   };
 
@@ -182,12 +124,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       isLoading,
       error,
       login,
-<<<<<<< HEAD
       logout,
       refreshToken
-=======
-      logout
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
     }}>
       {children}
     </AuthContext.Provider>

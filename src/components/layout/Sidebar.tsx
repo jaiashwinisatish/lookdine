@@ -5,10 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { ThemeToggle } from '../theme';
-<<<<<<< HEAD
 import { useAuth } from '@/context/AuthContext';
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 
 interface SidebarProps {
   title?: string;
@@ -18,7 +15,6 @@ export function Sidebar({ title }: SidebarProps) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isCollapsed, setIsCollapsed] = useState(false);
-<<<<<<< HEAD
   const { user, isAuthenticated, logout } = useAuth();
 
   const handleLogout = async () => {
@@ -30,12 +26,10 @@ export function Sidebar({ title }: SidebarProps) {
       navigate('/login');
     }
   };
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
-    { icon: Search, label: 'Search', path: '/search' }, // Added Search redirect
+    { icon: Search, label: 'Search', path: '/search' },
     { icon: MapPin, label: 'Nearby', path: '/nearby' },
     { icon: Calendar, label: 'Book', path: '/book' },
     { icon: MessageCircle, label: 'Chat', path: '/chat' },
@@ -102,7 +96,6 @@ export function Sidebar({ title }: SidebarProps) {
 
       {/* Profile Section */}
       <div className="p-3 border-t">
-<<<<<<< HEAD
         {isAuthenticated && user && (
           <div className="flex items-center gap-3 px-3 py-2">
             <Avatar className="h-8 w-8">
@@ -115,26 +108,6 @@ export function Sidebar({ title }: SidebarProps) {
             </div>
           </div>
         )}
-=======
-        <div 
-          onClick={() => navigate('/profile')}
-          className={cn(
-            "flex items-center gap-3 p-2 rounded-lg hover:bg-muted cursor-pointer transition-all", 
-            isCollapsed && "justify-center"
-          )}
-        >
-          <Avatar className="h-9 w-9 shrink-0">
-            <AvatarImage src="https://github.com/shadcn.png" />
-            <AvatarFallback>JD</AvatarFallback>
-          </Avatar>
-          {!isCollapsed && (
-            <div className="flex flex-col overflow-hidden">
-              <span className="text-sm font-semibold truncate">John Doe</span>
-              <span className="text-xs text-muted-foreground truncate">john@example.com</span>
-            </div>
-          )}
-        </div>
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
         
         <Button 
           variant="ghost" 
@@ -142,10 +115,7 @@ export function Sidebar({ title }: SidebarProps) {
             "w-full mt-2 text-muted-foreground justify-start gap-3", 
             isCollapsed && "px-0 justify-center"
           )}
-<<<<<<< HEAD
           onClick={handleLogout}
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
         >
           <LogOut className="h-5 w-5 shrink-0" />
           {!isCollapsed && <span>Log Out</span>}

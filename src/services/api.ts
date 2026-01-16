@@ -1,14 +1,16 @@
 import { nearbyVenues, nearbyPeople } from '@/data/mockData';
 import { VenueData } from '@/components/venue/VenueCard';
 import { PersonData } from '@/components/social/PersonCard';
+import { handleApiError } from '@/lib/error-handler';
 
-const API_BASE_URL = 'https://foodslinkx-backend.vercel.app/api';
+const API_BASE_URL = import.meta.env.DEV 
+  ? 'http://localhost:3001/api/'
+  : 'https://foodslinkx-backend.vercel.app/api/';
 
 const getAuthToken = () => {
   return localStorage.getItem('jwt_token');
 };
 
-<<<<<<< HEAD
 const setAuthToken = (token: string) => {
   localStorage.setItem('jwt_token', token);
 };
@@ -27,8 +29,79 @@ const handleUnauthorized = () => {
   }
 };
 
+// Mock API response for development
+const mockApiResponse = async (endpoint: string, options: RequestInit = {}) => {
+  await delay(500); // Simulate network delay
+  
+  // Simulate different responses based on endpoint
+  if (endpoint.includes('auth/login')) {
+    const body = JSON.parse(options.body as string);
+    
+    // Check registered users first
+    const registeredUsers = getRegisteredUsers();
+    const registeredUser = registeredUsers.find(u => u.email === body.email && u.password === body.password);
+    
+    if (registeredUser) {
+      return {
+        user: {
+          id: registeredUser.id,
+          email: registeredUser.email,
+          name: registeredUser.name,
+          avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(registeredUser.name)}&background=random`
+        },
+        token: "mock-jwt-token-" + Math.random().toString(36).substr(2, 9)
+      };
+    }
+    
+    // Check hardcoded demo credentials (for testing)
+    if (body.email === "user@example.com" && body.password === "password") {
+      return {
+        user: {
+          id: "1",
+          email: "user@example.com",
+          name: "John Doe",
+          avatar: "https://github.com/shadcn.png"
+        },
+        token: "mock-jwt-token-" + Math.random().toString(36).substr(2, 9)
+      };
+    }
+    
+    throw new Error("Invalid email or password");
+  }
+  
+  if (endpoint.includes('auth/signup')) {
+    const body = JSON.parse(options.body as string);
+    
+    // Check if user already exists
+    const registeredUsers = getRegisteredUsers();
+    const existingUser = registeredUsers.find(u => u.email === body.email);
+    
+    if (existingUser) {
+      throw new Error("User with this email already exists. Please login instead.");
+    }
+    
+    // Save new user to registered users
+    const newUser = saveRegisteredUser(body.email, body.password, body.name);
+    
+    return {
+      id: newUser.id,
+      email: newUser.email,
+      name: newUser.name,
+      avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(newUser.name)}&background=random`
+    };
+  }
+  
+  throw new Error(`Mock API: Endpoint ${endpoint} not implemented`);
+};
+
 // Enhanced API with interceptors
 const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
+  // In development, use mock data to avoid CORS issues
+  if (import.meta.env.DEV) {
+    console.log('Development mode: Using mock API for', endpoint);
+    return mockApiResponse(endpoint, options);
+  }
+  
   const token = getAuthToken();
   const url = `${API_BASE_URL}${endpoint}`;
   
@@ -48,98 +121,76 @@ const apiRequest = async (endpoint: string, options: RequestInit = {}) => {
       throw new Error('Session expired. Please login again.');
     }
 
+    // Handle other HTTP errors
+    if (!response.ok) {
+      const errorText = await response.text();
+      let errorMessage;
+      
+      try {
+        const errorData = JSON.parse(errorText);
+        errorMessage = errorData.message || errorData.error || `HTTP ${response.status}`;
+      } catch {
+        errorMessage = errorText || `HTTP ${response.status}`;
+      }
+      
+      const error = new Error(errorMessage);
+      (error as any).status = response.status;
+      throw error;
+    }
+
+    // Parse JSON response
+    const contentType = response.headers.get('content-type');
+    if (contentType && contentType.includes('application/json')) {
+      return await response.json();
+    }
+    
     return response;
   } catch (error) {
     // Handle network errors, CORS issues, etc.
     console.error('Network error during API request:', error);
+    
+    // Check if it's a CORS error
+    if (error instanceof TypeError && error.message.includes('Failed to fetch')) {
+      throw new Error('Network error: Unable to connect to server. Please check your connection or try again later.');
+    }
+    
     throw new Error(`Network error: ${error instanceof Error ? error.message : 'Unknown error'}`);
   }
 };
 
 const api = {
   async get<T>(endpoint: string): Promise<T> {
-    const response = await apiRequest(endpoint);
-=======
-const api = {
-  async get<T>(endpoint: string): Promise<T> {
-    const token = getAuthToken();
-    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      },
-    });
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
-    if (!response.ok) {
-      throw new Error(`Failed to fetch: ${response.statusText}`);
-    }
-    return response.json();
+    return await apiRequest(endpoint);
   },
 
   async post<T>(endpoint: string, data: any): Promise<T> {
-<<<<<<< HEAD
-    try {
-      const response = await apiRequest(endpoint, {
-        method: 'POST',
-        body: JSON.stringify(data),
-      });
-      if (!response.ok) {
-        throw new Error(`Failed to post: ${response.statusText} (${response.status})`);
-      }
-      return response.json();
-    } catch (error) {
-      // Log the error but don't throw - let the calling function handle fallback
-      console.warn('API POST failed, will use mock fallback:', error);
-      throw error;
-    }
+    return await apiRequest(endpoint, {
+      method: 'POST',
+      body: JSON.stringify(data),
+    });
   },
 
   async put<T>(endpoint: string, data: any): Promise<T> {
-    const response = await apiRequest(endpoint, {
+    return await apiRequest(endpoint, {
       method: 'PUT',
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      throw new Error(`Failed to put: ${response.statusText}`);
-    }
-    return response.json();
   },
 
   async delete<T>(endpoint: string): Promise<T> {
-    const response = await apiRequest(endpoint, {
+    return await apiRequest(endpoint, {
       method: 'DELETE',
     });
-    if (!response.ok) {
-      throw new Error(`Failed to delete: ${response.statusText}`);
-    }
-    return response.json();
   },
 
   async patch<T>(endpoint: string, data: any): Promise<T> {
-    const response = await apiRequest(endpoint, {
+    return await apiRequest(endpoint, {
       method: 'PATCH',
       body: JSON.stringify(data),
     });
-    if (!response.ok) {
-      throw new Error(`Failed to patch: ${response.statusText}`);
-=======
-    const token = getAuthToken();
-    const response = await fetch(`${API_BASE_URL}/${endpoint}`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-    if (!response.ok) {
-      throw new Error(`Failed to post: ${response.statusText}`);
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
-    }
-    return response.json();
   },
 };
 
-<<<<<<< HEAD
 // Simulate API delay
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -148,21 +199,12 @@ export interface LoginCredentials {
   password: string;
 }
 
-=======
-
-// Simulate API delay
-const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
-
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 export interface SignupData {
   name: string;
   email: string;
   password?: string;
-<<<<<<< HEAD
   phone?: string;
   address?: string;
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 }
 
 export interface User {
@@ -170,7 +212,6 @@ export interface User {
   name: string;
   email: string;
   avatar?: string;
-<<<<<<< HEAD
   phone?: string;
   address?: string;
 }
@@ -178,8 +219,6 @@ export interface User {
 export interface LoginResponse {
   user: User;
   token: string;
-=======
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 }
 
 export const fetchVenues = async (): Promise<VenueData[]> => {
@@ -214,7 +253,6 @@ export const deleteChat = async (chatId: string): Promise<void> => {
     localStorage.setItem('deletedChats', JSON.stringify(deleted));
   }
 };
-<<<<<<< HEAD
 
 export const signup = async (data: SignupData): Promise<User> => {
   try {
@@ -397,23 +435,65 @@ export const verifyToken = async (): Promise<boolean> => {
     console.warn('Token verification failed:', error);
     return false;
   }
-=======
-export const signup = async (data: SignupData): Promise<User> => {
-  await delay(1500); // Simulate network request
+};
 
-  // Basic validation simulation
-  if (!data.email || !data.password || !data.name) {
-    throw new Error("Missing required fields");
+export const searchHotels = async (params: {
+  query: string;
+  category?: string;
+  price?: string;
+  rating?: number;
+  location?: string;
+}) => {
+  try {
+    const queryParams = new URLSearchParams();
+    queryParams.append('q', params.query);
+    if (params.category && params.category !== 'all') {
+      queryParams.append('category', params.category);
+    }
+    if (params.price) {
+      queryParams.append('price', params.price);
+    }
+    if (params.rating) {
+      queryParams.append('rating', params.rating.toString());
+    }
+    if (params.location) {
+      queryParams.append('location', params.location);
+    }
+
+    const response = await api.get(`/hotel/search?${queryParams.toString()}`);
+    return response;
+  } catch (error) {
+    console.error('Search failed:', error);
+    // Return mock data for demo purposes
+    return {
+      data: [
+        {
+          id: "1",
+          name: "The Garden Restaurant",
+          category: "restaurant",
+          rating: 4.5,
+          reviews: 234,
+          distance: "0.8 km",
+          waitTime: "15-20 min",
+          price: "$$",
+          tags: ["Italian", "Outdoor Seating", "Romantic"],
+          image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400"
+        },
+        {
+          id: "2",
+          name: "Coffee House",
+          category: "cafe",
+          rating: 4.2,
+          reviews: 156,
+          distance: "0.3 km",
+          waitTime: "5-10 min",
+          price: "$",
+          tags: ["Coffee", "Pastries", "WiFi"],
+          image: "https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=400"
+        }
+      ]
+    };
   }
-
-  // Return a mock user
-  return {
-    id: "user-" + Math.random().toString(36).substr(2, 9),
-    name: data.name,
-    email: data.email,
-    avatar: "https://github.com/shadcn.png"
-  };
->>>>>>> 6d5d7b28d0faeb8de253a4d87fcbe1b6bc9f08be
 };
 
 export default api;

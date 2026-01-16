@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { Search as SearchIcon, Filter, MapPin, Star, Clock } from "lucide-react";
+import { Search as SearchIcon, Filter, MapPin, Star, Clock, Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useSearch } from "@/hooks/use-search";
+import { Link } from "react-router-dom";
 
 const SearchPage = () => {
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const {
+    searchParams,
+    results,
+    loading,
+    error,
+    updateSearchParam,
+    debouncedQuery,
+  } = useSearch();
 
   const categories = [
     { id: "all", label: "All" },
@@ -18,48 +27,13 @@ const SearchPage = () => {
     { id: "hotel", label: "Hotels" },
   ];
 
-  const mockResults = [
-    {
-      id: 1,
-      name: "The Garden Restaurant",
-      category: "restaurant",
-      rating: 4.5,
-      reviews: 234,
-      distance: "0.8 km",
-      waitTime: "15-20 min",
-      price: "$$",
-      tags: ["Italian", "Outdoor Seating", "Romantic"],
-    },
-    {
-      id: 2,
-      name: "Coffee House",
-      category: "cafe",
-      rating: 4.2,
-      reviews: 156,
-      distance: "0.3 km",
-      waitTime: "5-10 min",
-      price: "$",
-      tags: ["Coffee", "Pastries", "WiFi"],
-    },
-    {
-      id: 3,
-      name: "Sky Lounge Bar",
-      category: "bar",
-      rating: 4.7,
-      reviews: 89,
-      distance: "1.2 km",
-      waitTime: "10-15 min",
-      price: "$$$",
-      tags: ["Cocktails", "Rooftop", "Live Music"],
-    },
+  const priceRanges = [
+    { id: "all", label: "All Prices" },
+    { id: "$", label: "$" },
+    { id: "$$", label: "$$" },
+    { id: "$$$", label: "$$$" },
+    { id: "$$$$", label: "$$$$" },
   ];
-
-  const filteredResults = mockResults.filter((result) => {
-    const matchesSearch = result.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         result.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
-    const matchesCategory = selectedCategory === "all" || result.category === selectedCategory;
-    return matchesSearch && matchesCategory;
-  });
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -77,21 +51,24 @@ const SearchPage = () => {
             <Input
               type="text"
               placeholder="Search by name, cuisine, or tags..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              value={searchParams.query}
+              onChange={(e) => updateSearchParam('query', e.target.value)}
               className="pl-10 pr-4 py-3 text-lg"
             />
+            {loading && (
+              <Loader2 className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5 animate-spin" />
+            )}
           </div>
         </div>
 
         {/* Categories */}
-        <div className="mb-6">
+        <div className="mb-4">
           <div className="flex gap-2 flex-wrap">
             {categories.map((category) => (
               <Button
                 key={category.id}
-                variant={selectedCategory === category.id ? "default" : "outline"}
-                onClick={() => setSelectedCategory(category.id)}
+                variant={searchParams.category === category.id ? "default" : "outline"}
+                onClick={() => updateSearchParam('category', category.id)}
                 className="rounded-full"
               >
                 {category.label}
@@ -100,9 +77,63 @@ const SearchPage = () => {
           </div>
         </div>
 
+        {/* Price Filters */}
+        <div className="mb-6">
+          <div className="flex gap-2 flex-wrap">
+            {priceRanges.map((price) => (
+              <Button
+                key={price.id}
+                variant={searchParams.price === price.id ? "default" : "outline"}
+                onClick={() => updateSearchParam('price', price.id)}
+                className="rounded-full"
+                size="sm"
+              >
+                {price.label}
+              </Button>
+            ))}
+          </div>
+        </div>
+
         {/* Results */}
         <div className="space-y-4">
-          {filteredResults.length === 0 ? (
+          {loading ? (
+            // Loading skeleton
+            Array.from({ length: 3 }).map((_, index) => (
+              <Card key={index}>
+                <CardContent className="p-6">
+                  <div className="flex justify-between items-start mb-3">
+                    <div className="flex-1">
+                      <Skeleton className="h-6 w-48 mb-2" />
+                      <div className="flex items-center gap-4">
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-4 w-16" />
+                        <Skeleton className="h-4 w-16" />
+                      </div>
+                    </div>
+                    <Skeleton className="h-6 w-20" />
+                  </div>
+                  <div className="flex gap-2 mb-3">
+                    <Skeleton className="h-5 w-16" />
+                    <Skeleton className="h-5 w-20" />
+                    <Skeleton className="h-5 w-16" />
+                  </div>
+                  <Separator className="mb-3" />
+                  <div className="flex justify-between">
+                    <Skeleton className="h-8 w-24" />
+                    <Skeleton className="h-8 w-20" />
+                  </div>
+                </CardContent>
+              </Card>
+            ))
+          ) : error ? (
+            <Card>
+              <CardContent className="py-8 text-center">
+                <SearchIcon className="h-12 w-12 text-red-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium text-gray-900 mb-2">Search Error</h3>
+                <p className="text-gray-600">{error}</p>
+              </CardContent>
+            </Card>
+          ) : results.length === 0 ? (
             <Card>
               <CardContent className="py-8 text-center">
                 <SearchIcon className="h-12 w-12 text-gray-400 mx-auto mb-4" />
@@ -111,7 +142,7 @@ const SearchPage = () => {
               </CardContent>
             </Card>
           ) : (
-            filteredResults.map((result) => (
+            results.map((result) => (
               <Card key={result.id} className="hover:shadow-md transition-shadow cursor-pointer">
                 <CardContent className="p-6">
                   <div className="flex justify-between items-start mb-3">
@@ -150,11 +181,11 @@ const SearchPage = () => {
                   <Separator className="mb-3" />
                   
                   <div className="flex justify-between items-center">
-                    <Button variant="outline" size="sm">
-                      View Details
+                    <Button variant="outline" size="sm" asChild>
+                      <Link to={`/restaurant/${result.id}`}>View Details</Link>
                     </Button>
-                    <Button size="sm">
-                      Book Now
+                    <Button size="sm" asChild>
+                      <Link to={`/book?restaurant=${result.id}`}>Book Now</Link>
                     </Button>
                   </div>
                 </CardContent>
