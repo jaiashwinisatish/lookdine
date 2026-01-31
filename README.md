@@ -1,4 +1,4 @@
-# 🍽️ LookDine - Social Dining Experience Platform
+# 🍽️ LookDine - Social Dining Experience 
 
 <div align="center">
 
